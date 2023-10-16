@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="./tailwind.css">
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com/2.2.15/tailwind.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            screens: {
+                'sm': {'min': '250px', 'max': '767px'},
+                // => @media (min-width: 640px and max-width: 767px) { ... }
+
+                'md': {'min': '768px', 'max': '1023px'},
+                // => @media (min-width: 768px and max-width: 1023px) { ... }
+
+                'lg': {'min': '1024px', 'max': '1535px'},
+                // => @media (min-width: 1024px and max-width: 1279px) { ... }
+
+                // 'xl': {'min': '1280px', 'max': '1535px'},
+                // // => @media (min-width: 1280px and max-width: 1535px) { ... }
+
+                '2xl': {'min': '1536px', 'max': '1920px'},
+                // => @media (min-width: 1536px) { ... }
+
+                '3xl': {'min': '1921px','max': '3000px'},
+                // => @media (min-width: 1536px) { ... }
+                },
+            extend: {
+            }
+          }
+        }
+      </script>
+    <title>LUCIDBRAIN</title>
+</head>
+
+<body class="w-screen h-screen overflow-x-hidden">
+    <div class="h-screen w-screen">
+       
+        <!-- <h2 class="py-4 bg-[#7cc576] text-white shadow-md w-screen font-bold text-2xl text-center">LUCIDBRAIN</h2> -->
+        <div class="w-full fixed top-0 bg-[#7cc576] text-white shadow-md">
+            <h2 class=" text-white shadow-md w-full font-semibold py-2 text-xl text-center">LUCIDBRAIN</h2>
+            <!-- <img src="./assets/LUCIDBRAINWhite.png" class="" alt="Logo LUCIDBRAIN" > -->
+        </div>
+        <div class="flex justify-center items-center flex-col h-fit w-screen md:items-center sm:items-center sm:w-screen xs:w-screen xs:items-start">
+            <div class="h-full pt-14 pb-[200px] flex flex-col w-screen container md:px-0 sm:px-0 xs:px-0">
+                <button id="scrollToBottomBtn" class="fixed md:bottom-44 sm:bottom-44 bottom-28 right-4 bg-[#7cc576] text-xs text-white px-4 py-2 rounded-lg cursor-pointer z-50">
+                    Scroll to Bottom
+                </button>
+                {% for item in conversation %}
+                {% if item.get('user') %}
+                <div class="w-full py-2 ">
+                    <div class="w-full flex justify-end gap-2">
+                        <p class="text-xs bg-[#777777] p-4 rounded-md shadow-md border-[#777777] bg-opacity-30">
+                            {{ item.get('user') }}
+                        </p>
+                        <span class="font-bold bg-[#7cc576] py-2.5 px-4 aspect-square rounded-full shadow-md border-[#777777] bg-opacity-60">You</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if item.get('assistant') %}
+                <div class="w-full py-2 ">
+                    <div class="flex gap-2">
+                        <span class="max-w-[60px] max-h-[60px] font-bold bg-[#7cc576] p-4 aspect-square rounded-full shadow-md border-[#777777] bg-opacity-60">M</span>
+                        <div class="max-w-[600px] text-xs bg-[#777777] p-4 rounded-md shadow-md border-[#777777] bg-opacity-30 whitespace-wrap">
+                            {{ item.get('assistant') }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="px-10 flex fixed w-screen bottom-0 bg-[#f6f6f6] shadow-md border border-t-2 justify-center items-center md:flex-col-reverse sm:flex-col-reverse">
+                <div class="flex w-fit items-center justify-center md:w-full sm:w-full">
+                    <form class="w-full flex flex-col gap-1 py-2" method='POST' enctype='multipart/form-data'>
+                        {{ form.hidden_tag() }}
+                            {{ form.file( class="cursor-pointer block w-full text-sm text-slate-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-r-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-violet-50 file:text-[#7cc576]
+                            hover:file:bg-violet-100 
+                            border
+                            rounded-md
+                          ") }}
+                        <button class="pointer-cursor text-[.8em] text-center items-center cursor-pointer flex bg-[#7cc576] text-white rounded-lg py-2 border-[#4c7e47] border-b-[4px] hover:text-[#488043] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]" type="submit">
+                            {{ form.submit(class="w-full text-center font-bold") }}
+                        </button>
+                    </form>
+                </div>
+                <form method="POST" class="w-4/6 flex justify-center items-center h-full md:w-full sm:w-full">
+                    <div class="w-10/12">
+                        <!-- <label for="question" class="font-semibold">Ask a question:</label> -->
+
+                        <div class="flex w-full gap-2">
+                            <input class="border-[.8px] border-[#4c8247] my-2 w-full py-3 text-xs px-2 rounded-md" type="text" id="question" name="question" placeholder="Type your question here..." required>
+                            <div class="py-2">
+                                <button class="cursor-pointer transition-all bg-[#7cc576] text-white px-6 py-2 rounded-lg border-[#a8e4a2] border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+
+            scrollToBottomBtn.addEventListener("click", function () {
+                // Scroll to the bottom of the page
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        });
+    </script>
+</body>
+
+</html>
